@@ -1,0 +1,111 @@
+DEBUG - 2025-07-12 16:38:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-07-12 16:38:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-07-12 16:39:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-07-12 16:39:13 --> TypeError: CodeIgniter\Database\BaseBuilder::getOperatorFromWhereKey(): Argument #1 ($whereKey) must be of type string, int given, called in C:\laragon\www\ciex\system\Database\BaseBuilder.php on line 781
+[Method: GET, Route: chamados]
+in SYSTEMPATH\Database\BaseBuilder.php on line 3495.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(781): CodeIgniter\Database\BaseBuilder->getOperatorFromWhereKey(1)
+ 2 SYSTEMPATH\Database\BaseBuilder.php(722): CodeIgniter\Database\BaseBuilder->whereHaving('QBWhere', '1', '0', 'AND ', true)
+ 3 APPPATH\Controllers\Chamados.php(55): CodeIgniter\Database\BaseBuilder->where('1', '0')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Chamados->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Chamados))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-07-12 16:39:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-07-12 16:39:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-07-12 16:39:30 --> TypeError: CodeIgniter\Database\BaseBuilder::getOperatorFromWhereKey(): Argument #1 ($whereKey) must be of type string, int given, called in C:\laragon\www\ciex\system\Database\BaseBuilder.php on line 781
+[Method: GET, Route: compras]
+in SYSTEMPATH\Database\BaseBuilder.php on line 3495.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(781): CodeIgniter\Database\BaseBuilder->getOperatorFromWhereKey(1)
+ 2 SYSTEMPATH\Database\BaseBuilder.php(722): CodeIgniter\Database\BaseBuilder->whereHaving('QBWhere', '1', '0', 'AND ', true)
+ 3 APPPATH\Controllers\Compras.php(49): CodeIgniter\Database\BaseBuilder->where('1', '0')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Compras->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Compras))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-07-12 16:39:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-07-12 16:39:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\Clientes::$usuarioModel is deprecated in APPPATH\Controllers\Clientes.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(903): App\Controllers\Clientes->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(498): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-07-12 16:39:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-07-12 16:39:48 --> TypeError: CodeIgniter\Database\BaseBuilder::getOperatorFromWhereKey(): Argument #1 ($whereKey) must be of type string, int given, called in C:\laragon\www\ciex\system\Database\BaseBuilder.php on line 781
+[Method: GET, Route: clientes/novo]
+in SYSTEMPATH\Database\BaseBuilder.php on line 3495.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(781): CodeIgniter\Database\BaseBuilder->getOperatorFromWhereKey(1)
+ 2 SYSTEMPATH\Database\BaseBuilder.php(722): CodeIgniter\Database\BaseBuilder->whereHaving('QBWhere', '1', '0', 'AND ', true)
+ 3 APPPATH\Controllers\Clientes.php(47): CodeIgniter\Database\BaseBuilder->where('1', '0')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Clientes->novo()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Clientes))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-07-12 16:40:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\Clientes::$usuarioModel is deprecated in APPPATH\Controllers\Clientes.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(903): App\Controllers\Clientes->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(498): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-07-12 16:40:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-07-12 16:40:19 --> TypeError: CodeIgniter\Database\BaseBuilder::getOperatorFromWhereKey(): Argument #1 ($whereKey) must be of type string, int given, called in C:\laragon\www\ciex\system\Database\BaseBuilder.php on line 781
+[Method: GET, Route: clientes/novo]
+in SYSTEMPATH\Database\BaseBuilder.php on line 3495.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(781): CodeIgniter\Database\BaseBuilder->getOperatorFromWhereKey(1)
+ 2 SYSTEMPATH\Database\BaseBuilder.php(722): CodeIgniter\Database\BaseBuilder->whereHaving('QBWhere', '1', '0', 'AND ', true)
+ 3 APPPATH\Controllers\Clientes.php(47): CodeIgniter\Database\BaseBuilder->where('1', '0')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Clientes->novo()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Clientes))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-07-12 16:40:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Clientes::$usuarioModel is deprecated in APPPATH\Controllers\Clientes.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(903): App\Controllers\Clientes->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(498): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-07-12 16:40:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-07-12 16:40:34 --> TypeError: CodeIgniter\Database\BaseBuilder::getOperatorFromWhereKey(): Argument #1 ($whereKey) must be of type string, int given, called in C:\laragon\www\ciex\system\Database\BaseBuilder.php on line 781
+[Method: GET, Route: clientes/novo]
+in SYSTEMPATH\Database\BaseBuilder.php on line 3495.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(781): CodeIgniter\Database\BaseBuilder->getOperatorFromWhereKey(1)
+ 2 SYSTEMPATH\Database\BaseBuilder.php(722): CodeIgniter\Database\BaseBuilder->whereHaving('QBWhere', '1', '0', 'AND ', true)
+ 3 APPPATH\Controllers\Clientes.php(47): CodeIgniter\Database\BaseBuilder->where('1', '0')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Clientes->novo()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Clientes))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-07-12 16:40:54 --> [DEPRECATED] Creation of dynamic property App\Controllers\Clientes::$usuarioModel is deprecated in APPPATH\Controllers\Clientes.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(903): App\Controllers\Clientes->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(498): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-07-12 16:40:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-07-12 16:40:54 --> TypeError: CodeIgniter\Database\BaseBuilder::getOperatorFromWhereKey(): Argument #1 ($whereKey) must be of type string, int given, called in C:\laragon\www\ciex\system\Database\BaseBuilder.php on line 781
+[Method: GET, Route: clientes/novo]
+in SYSTEMPATH\Database\BaseBuilder.php on line 3495.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(781): CodeIgniter\Database\BaseBuilder->getOperatorFromWhereKey(1)
+ 2 SYSTEMPATH\Database\BaseBuilder.php(722): CodeIgniter\Database\BaseBuilder->whereHaving('QBWhere', '1', '0', 'AND ', true)
+ 3 APPPATH\Controllers\Clientes.php(47): CodeIgniter\Database\BaseBuilder->where('1', '0')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Clientes->novo()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Clientes))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-07-12 16:40:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
