@@ -23,7 +23,7 @@ class Equipamentos extends BaseController
 
         $filtroEstado = $this->request->getGet('filtro_estado');
         $filtroUnidade = $this->request->getGet('filtro_unidade');
-
+        $equipamentosModelos = $this->getEquipamentosEModulos();
         // ADMIN pode filtrar todos os estados/unidades
         if ($tipo === 'admin' && $estado === 'BRASIL' && $unidade === 'BRASIL') {
             // Lista todos os estados
@@ -75,6 +75,7 @@ class Equipamentos extends BaseController
             'estadoSelecionado' => $filtroEstado,
             'unidadeSelecionada' => $filtroUnidade,
             'tipoUsuario' => $tipo,
+            'equipamentosModelos' => $equipamentosModelos,
         ]);
         echo view('templates/footer');
     }
@@ -160,26 +161,82 @@ class Equipamentos extends BaseController
             return redirect()->to('/equipamentos')->with('erro', 'Método inválido.');
         }
 
-        $data = [
-            'nome' => $this->request->getPost('nome'),
-            'modelo' => $this->request->getPost('modelo'),
-            'quantidade_backup' => (int) $this->request->getPost('quantidade'),
-            'quantidade_uso' => 0,
-            'unidade' => session('unidade'),
-            'estado' => session('estado'),
-            // pode preencher outros campos se necessário
-        ];
+        $nome = $this->request->getPost('nome');
+        $modelo = $this->request->getPost('modelo');
+        $quantidade = (int) $this->request->getPost('quantidade');
+        $unidade = session('unidade');
+        $estado = session('estado');
 
-        // Validação simples (pode ser melhorada)
-        if (empty($data['nome']) || empty($data['modelo']) || $data['quantidade_backup'] < 1) {
+        if (empty($nome) || empty($modelo) || $quantidade < 1) {
             return redirect()->back()->withInput()->with('erro', 'Preencha todos os campos corretamente.');
         }
 
-        // Salvar no banco
-        $this->equipamentoModel->insert($data);
+        // Verifica se já existe o mesmo equipamento/modelo/unidade/estado
+        $equipamentoExistente = $this->equipamentoModel
+            ->where('nome', $nome)
+            ->where('modelo', $modelo)
+            ->where('unidade', $unidade)
+            ->where('estado', $estado)
+            ->first();
 
-        return redirect()->to('/equipamentos')->with('msg', 'Equipamento adicionado com sucesso.');
+        if ($equipamentoExistente) {
+            // Atualiza a quantidade de backup
+            $novaQtd = $equipamentoExistente['quantidade_backup'] + $quantidade;
+            $this->equipamentoModel->update($equipamentoExistente['id'], [
+                'quantidade_backup' => $novaQtd
+            ]);
+            return redirect()->to('/equipamentos')->with('msg', 'Quantidade atualizada com sucesso.');
+        } else {
+            // Insere novo
+            $this->equipamentoModel->insert([
+                'nome' => $nome,
+                'modelo' => $modelo,
+                'quantidade_backup' => $quantidade,
+                'quantidade_uso' => 0,
+                'unidade' => $unidade,
+                'estado' => $estado,
+            ]);
+            return redirect()->to('/equipamentos')->with('msg', 'Equipamento adicionado com sucesso.');
+        }
     }
+
+    private function getEquipamentosEModulos()
+    {
+        return [
+            'Televisão'           => ['Samsung 43 Polegadas','Samsung 50 Polegadas','Philco 43 Polegadas'],
+
+            'Notebook'            => ['Dell Inspiron 15','Lenovo ThinkPad'],
+
+            'Impressora'          => ['HP LaserJet 1020','Epson EcoTank L3150'],
+
+            'Pad Assinatura'      => ['AKYAMA AK560'],
+
+            'Monitor '            => ['Monitor RG DELL 24 Polegadas','Monitor AOC','Monitor Itaú Tec'],
+
+            'Suporte'             => ['Televisão','Tablet','Câmera'],
+
+            'Biombo'              => ['Para RG ou CNH'],
+
+            'Leitor Biomêtrico'   => ['Leitor biométrico Akiyama Kojak AK06-12741','Leitor biométrico CNH','Leitor Biométrico Finger-Tech'],
+
+            'Fonte para câmera'   => ['Fonte ACK-e10 Adaptador Ac Canon T3 A T7'],
+
+            'Cabos de Energia'    =>['Desktop', 'Televisão','Rádio comunicador', 'Fortigate','Carregador de Tablet '],
+            
+            'Tablet de Avaliação' => ['Tablet A9', 'Tablet A7'],
+
+            'Fita para Fixação'   => ['3M  dupla face 3 metros', '3M dupla face 2 metros','3M dupla face 1 metro'],
+
+            'Pendrive'            => ['Sandisk Cruzer Blade 16GB','Sandisk Cruzer Blade 32GB','Sandisk Ultra Flair 64GB','Kingston DataTraveler 16GB','Kingston DataTraveler 32GB','Kingston DataTraveler 64GB','Multilaser Twist 16GB','Multilaser Twist 32GB','Sony MicroVault 16GB','Sony MicroVault 32GB'],
+
+            'Switch'             =>   ["Aruba 2930F 48G PoE+", "Cisco Catalyst 2960X 50-Port PoE+", "Ubiquiti UniFi Switch 30-Port PoE"],
+
+
+
+
+        ];
+    }
+
 
 
 }

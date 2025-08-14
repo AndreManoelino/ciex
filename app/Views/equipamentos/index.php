@@ -41,33 +41,59 @@
       <?php endif; ?>
 
       <?php if ($tipoUsuario === 'tecnico'): ?>
-        <!-- Formulário técnico para adicionar equipamentos -->
-        <div class="card mb-4">
-          <div class="card-header">Adicionar Equipamento (Backup)</div>
-          <div class="card-body">
-            <form method="post" action="<?= base_url('/equipamentos/salvar') ?>">
-              <?= csrf_field() ?>
-              <div class="row">
-                <div class="col-md-4">
-                  <label for="nome">Nome do Equipamento</label>
-                  <input type="text" name="nome" id="nome" class="form-control" required>
-                </div>
-                <div class="col-md-4">
-                  <label for="modelo">Modelo</label>
-                  <input type="text" name="modelo" id="modelo" class="form-control" required>
-                </div>
-                <div class="col-md-2">
-                  <label for="quantidade">Quantidade</label>
-                  <input type="number" name="quantidade" id="quantidade" class="form-control" min="1" required>
-                </div>
-                <div class="col-md-2 d-flex align-items-end">
-                  <button type="submit" class="btn btn-success w-100">Adicionar</button>
-                </div>
+          <!-- Formulário técnico para adicionar equipamentos -->
+          <div class="card mb-4">
+              <div class="card-header">Adicionar Equipamento (Backup)</div>
+              <div class="card-body">
+                  <form method="post" action="<?= base_url('/equipamentos/salvar') ?>">
+                      <?= csrf_field() ?>
+                      <div class="row">
+                          <div class="col-md-4">
+                              <label>Nome do Equipamento</label>
+                              <select id="nome" name="nome" class="form-control" required>
+                                  <option value="">Selecione</option>
+                                  <?php foreach ($equipamentosModelos as $nome => $modelos): ?>
+                                      <option value="<?= $nome ?>"><?= $nome ?></option>
+                                  <?php endforeach; ?>
+                              </select>
+                          </div>
+                          <div class="col-md-4">
+                              <label>Modelo</label>
+                              <select id="modelo" name="modelo" class="form-control" required>
+                                  <option value="">Selecione o nome primeiro</option>
+                              </select>
+                          </div>
+                          <div class="col-md-2">
+                              <label>Quantidade</label>
+                              <input type="number" name="quantidade" id="quantidade" class="form-control" min="1" required>
+                          </div>
+                          <div class="col-md-2 d-flex align-items-end">
+                              <button type="submit" class="btn btn-success w-100">Adicionar</button>
+                          </div>
+                      </div>
+                  </form>
               </div>
-            </form>
           </div>
-        </div>
+
+          <script>
+              const equipamentosModelos = <?= json_encode($equipamentosModelos) ?>;
+              const nomeSelect = document.getElementById('nome');
+              const modeloSelect = document.getElementById('modelo');
+
+              nomeSelect.addEventListener('change', function () {
+                  modeloSelect.innerHTML = '<option value="">Selecione</option>';
+                  if (equipamentosModelos[this.value]) {
+                      equipamentosModelos[this.value].forEach(modelo => {
+                          let opt = document.createElement('option');
+                          opt.value = modelo;
+                          opt.textContent = modelo;
+                          modeloSelect.appendChild(opt);
+                      });
+                  }
+              });
+          </script>
       <?php endif; ?>
+
       <?php if ($tipoUsuario === 'admin'): ?>
           <form method="get">
               <label>Estado:</label>
