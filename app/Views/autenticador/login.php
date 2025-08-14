@@ -10,11 +10,13 @@
     }
 
     body {
-      background: darkorange;
+      background: url('/theme/dist/img/cix_case.jpg') no-repeat center center fixed;
+      background-size: cover; /* Faz a imagem preencher toda a tela */
       display: flex;
       flex-direction: column;
       font-family: Arial, sans-serif;
     }
+
 
     .main-content {
       flex: 1;
