@@ -209,7 +209,7 @@ class Equipamentos extends BaseController
 
             'Impressora'          => ['HP LaserJet 1020','Epson EcoTank L3150'],
 
-            'Pad Assinatura'      => ['AKYAMA AK560'],
+            'Pad Assinatura'      => ['AKYAMA AK560', 'Pad Assinatura Topaz'],
 
             'Monitor '            => ['Monitor RG DELL 24 Polegadas','Monitor AOC','Monitor Itaú Tec'],
 
