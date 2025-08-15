@@ -146,7 +146,7 @@ class Chamados extends Controller
         $senhaEmail   = $this->request->getPost('senha_email'); 
 
         // Debug para verificar o estado antes de inserir
-        log_message('debug', "Abrindo chamado: estado='$estado', sistema='$sistema', técnico='$tecnico'");
+        //log_message('debug', "Abrindo chamado: estado='$estado', sistema='$sistema', técnico='$tecnico'");
 
         $insertData = [
             'sistema'     => $sistema,
@@ -154,9 +154,9 @@ class Chamados extends Controller
             'tecnico'     => $tecnico,
             'data_inicio' => $data_inicio,
             'estado'      => $estado,
-            'status'      => 'ativo',  // Garantir que o status comece como ativo
-            'email_enviado' => 0,      // Define valor padrão para email_enviado
-            'num_edicoes' => 0,        // Para controle de edições
+            'status'      => 'ativo',  // Garantindo que o status ele inicie como ativo 
+            'email_enviado' => 0,      // Definindo um valor para os e-mail enviados
+            'num_edicoes' => 0,        // Aqui criei esses paramentros para criar um limite de edições
         ];
         log_message('debug', 'Insert chamado data: ' . print_r($insertData, true));
 
@@ -164,7 +164,7 @@ class Chamados extends Controller
 
         $id = $this->chamado_model->getInsertID();
 
-        // Verifica se deve enviar e-mail E a senha foi informada
+        // Verificando  se deve enviar e-mail e se a senha ela foi informada 
         if (!empty($this->sistemas[$sistema]['envia_email']) && !empty($senhaEmail)) {
             $mail = new PHPMailer(true);
             try {
@@ -272,7 +272,7 @@ class Chamados extends Controller
             . view('templates/footer');
     }
 
-    // Função para filtrar chamados (exemplo simples com GET)
+    // Função para filtrar chamados 
     public function filtrar()
     {
         $unidade = $this->session->get('unidade');
@@ -354,5 +354,7 @@ class Chamados extends Controller
     }
 
 
-    // criar função para exportar para Excel aqui (usando PhpSpreadsheet) isso depois 
+    // Irei criar a função para exportar os chamados para um excel para que se for da necessidade ter isso salvo em outro local o usuário irá conseguir visualizar e consultar além de conseguir fazer pelo proprio programa
+
+    // Essa atualização será feita psoteriormente  
 }
