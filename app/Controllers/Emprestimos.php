@@ -34,22 +34,19 @@ class Emprestimos extends BaseController
             $unidadesEstado = $this->getUnidadesPorEstado($estado);
         }
 
-        // Monta a query base
+        // Monta a query base de empréstimos
         $query = $this->emprestimoModel;
 
         if ($tipo === 'admin') {
-            // Filtra por estado, se selecionado
             if (!empty($estadoFiltro)) {
                 $unidadesEstado = $this->getUnidadesPorEstado($estadoFiltro);
 
                 if (!empty($unidadeFiltro)) {
-                    // Filtra por unidade específica
                     $query->groupStart()
                           ->where('unidade_origem', $unidadeFiltro)
                           ->orWhere('unidade_destino', $unidadeFiltro)
                           ->groupEnd();
                 } else {
-                    // Filtra por todas as unidades do estado
                     $query->groupStart();
                     foreach ($unidadesEstado as $uni) {
                         $query->orWhere('unidade_origem', $uni)
@@ -58,9 +55,7 @@ class Emprestimos extends BaseController
                     $query->groupEnd();
                 }
             }
-            // Se não escolher estado, vê tudo
         } elseif ($tipo === 'supervisor') {
-            // Supervisor vê somente unidades do estado dele
             $query->groupStart()
                   ->whereIn('unidade_origem', $unidadesEstado)
                   ->orWhereIn('unidade_destino', $unidadesEstado)
@@ -73,7 +68,6 @@ class Emprestimos extends BaseController
                       ->groupEnd();
             }
         } else {
-            // Técnico vê somente sua unidade + adicionais
             $unidadesPermitidas = [$unidade];
             $unidadesAdicionais = $session->get('unidades_adicionais') ?? [];
             $unidadesPermitidas = array_merge($unidadesPermitidas, $unidadesAdicionais);
@@ -86,19 +80,35 @@ class Emprestimos extends BaseController
 
         $emprestimos = $query->orderBy('data_emprestimo', 'DESC')->findAll();
 
+        // --- Filtragem de equipamentos ---
+        if ($tipo === 'admin') {
+            $equipamentosPermitidos = $this->equipamentoModel->findAll();
+        } elseif ($tipo === 'supervisor') {
+            // Supervisor vê equipamentos de qualquer unidade do estado dele
+            $equipamentosPermitidos = $this->equipamentoModel
+                ->whereIn('unidade', $unidadesEstado)
+                ->findAll();
+        } else {
+            // Técnico vê somente equipamentos da própria unidade
+            $equipamentosPermitidos = $this->equipamentoModel
+                ->where('unidade', $unidade)
+                ->findAll();
+        }
+
         echo view('templates/header');
         echo view('templates/sidebar');
         echo view('emprestimos/index', [
-            'emprestimos'       => $emprestimos,
-            'tipoUsuario'       => $tipo,
-            'unidadesEstado'    => $unidadesEstado,
-            'equipamentos'      => $this->equipamentoModel->findAll(),
-            'estadoFiltro'      => $estadoFiltro,
-            'unidadeFiltro'     => $unidadeFiltro,
-            'todosEstados'      => $todosEstados
+            'emprestimos'    => $emprestimos,
+            'tipoUsuario'    => $tipo,
+            'unidadesEstado' => $unidadesEstado,
+            'equipamentos'   => $equipamentosPermitidos,
+            'estadoFiltro'   => $estadoFiltro,
+            'unidadeFiltro'  => $unidadeFiltro,
+            'todosEstados'   => $todosEstados
         ]);
         echo view('templates/footer');
     }
+
 
         
     // Registrar empréstimo com upload do termo de envio
@@ -114,23 +124,47 @@ class Emprestimos extends BaseController
         $quantidade = $this->request->getPost('quantidade');
         $unidade_origem = $session->get('unidade');
         $unidade_destino = $this->request->getPost('unidade_destino');
-
-        // Verificar se unidade_destino está na lista permitida do usuário (para evitar "embolação")
         $estado = $session->get('estado');
+        $tipo = $session->get('tipo');
+
+        // 🔹 1. Validação da unidade de destino conforme perfil
         $unidadesEstado = $this->getUnidadesPorEstado($estado);
-        $unidadesPermitidas = [$unidade_origem];
-        $unidadesAdicionais = $session->get('unidades_adicionais') ?? [];
-        $unidadesPermitidas = array_merge($unidadesPermitidas, $unidadesAdicionais);
-        if ($session->get('tipo') === 'supervisor') {
-            $unidadesPermitidas = $unidadesEstado;
+        if ($tipo === 'admin') {
+            $unidadesPermitidas = $this->getTodosEstados() ? $this->getUnidadesPorEstado($estado) : []; // admin pode tudo
+        } elseif ($tipo === 'supervisor') {
+            $unidadesPermitidas = $unidadesEstado; // supervisor pode qualquer unidade do estado
         } else {
-            $unidadesPermitidas = $unidadesEstado;
+            $unidadesPermitidas = [$unidade_origem];
+            $unidadesAdicionais = $session->get('unidades_adicionais') ?? [];
+            $unidadesPermitidas = array_merge($unidadesPermitidas, $unidadesAdicionais); // técnico pode sua unidade + adicionais
         }
+
         if (!in_array($unidade_destino, $unidadesPermitidas)) {
             return redirect()->back()->with('erro', 'Unidade de destino inválida para seu perfil.');
         }
 
-        // Upload termo de envio
+        // 🔹 2. Validação do equipamento conforme perfil
+        $equipamento = $this->equipamentoModel
+            ->where('nome', $equipamento_nome)
+            ->first();
+
+        if (!$equipamento) {
+            return redirect()->back()->with('erro', 'Equipamento não encontrado.');
+        }
+
+        if ($tipo === 'supervisor') {
+            if (!in_array($equipamento['unidade'], $unidadesEstado)) {
+                return redirect()->back()->with('erro', 'Você não pode emprestar este equipamento.');
+            }
+        } elseif ($tipo !== 'admin') {
+            // técnico
+            if ($equipamento['unidade'] !== $unidade_origem) {
+                return redirect()->back()->with('erro', 'Você não pode emprestar este equipamento.');
+            }
+        }
+        // Admin passa sem restrição
+
+        // 🔹 3. Upload termo de envio
         $arquivoTermo = $this->request->getFile('termo_envio');
         if (!$arquivoTermo->isValid()) {
             return redirect()->back()->with('erro', 'Termo de envio obrigatório.');
@@ -140,6 +174,7 @@ class Emprestimos extends BaseController
 
         $data_emprestimo = date('Y-m-d H:i:s');
 
+        // 🔹 4. Inserção
         $dados = [
             'equipamento_nome' => $equipamento_nome,
             'quantidade' => $quantidade,
@@ -158,6 +193,7 @@ class Emprestimos extends BaseController
 
         return redirect()->to('/emprestimos')->with('msg', 'Empréstimo registrado e termo enviado.');
     }
+
 
     // Registrar devolução com upload do termo de devolução
     public function registrarDevolucao($id)

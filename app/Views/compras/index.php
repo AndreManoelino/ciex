@@ -86,14 +86,12 @@
   }
 </style>
 
-
 <div class="content-wrapper">
   <div class="content-header">
     <div class="container-fluid">
 
       <h2>Compras Mensais</h2>
 
-      <!-- Mensagens de feedback -->
       <?php if (session()->getFlashdata('msg')): ?>
         <div class="alert alert-success"><?= session()->getFlashdata('msg') ?></div>
       <?php endif; ?>
@@ -108,10 +106,10 @@
           <select name="unidade" class="form-control" onchange="this.form.submit()">
             <option value="">Todas as unidades</option>
             <?php foreach ($unidades as $u): ?>
-                <?php $nomeUnidade = is_array($u) ? $u['unidade'] : $u; ?>
-                <option value="<?= esc($nomeUnidade) ?>" <?= ($unidadeFiltro === $nomeUnidade) ? 'selected' : '' ?>>
-                    <?= esc($nomeUnidade) ?>
-                </option>
+              <?php $nomeUnidade = is_array($u) ? $u['unidade'] : $u; ?>
+              <option value="<?= esc($nomeUnidade) ?>" <?= ($unidadeFiltro === $nomeUnidade) ? 'selected' : '' ?>>
+                <?= esc($nomeUnidade) ?>
+              </option>
             <?php endforeach; ?>
           </select>
         </form>
@@ -119,38 +117,82 @@
 
       <!-- Formulário de nova compra para técnico -->
       <?php if (session('tipo') === 'tecnico'): ?>
-        <div class="card mb-4">
-          <div class="card-header">Nova Solicitação de Compra</div>
-          <div class="card-body">
-            <form method="post" action="<?= base_url('/compras/salvar') ?>">
-              <?= csrf_field() ?>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Nome do Equipamento</label>
-                  <input type="text" name="nome" class="form-control" required>
-                </div>
-                <div class="col-md-3">
-                  <label>Modelo</label>
-                  <input type="text" name="modelo" class="form-control" required>
-                </div>
-                <div class="col-md-2">
-                  <label>Quantidade</label>
-                  <input type="number" name="quantidade" class="form-control" min="1" required>
-                </div>
-                <div class="col-md-2">
-                  <label>Valor Unitário (R$)</label>
-                  <input type="number" name="valor_unitario" class="form-control" min="0" step="0.01" required>
-                </div>
-                <div class="col-md-2">
-                  <label>Link de Referência</label>
-                  <input type="url" name="link" class="form-control" placeholder="URL">
-                </div>
+      <div class="card mb-4">
+        <div class="card-header">Nova Solicitação de Compra</div>
+        <div class="card-body">
+          <form method="post" action="<?= base_url('/compras/salvar') ?>">
+            <?= csrf_field() ?>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Equipamento</label>
+                <select name="nome" id="selectEquipamento" class="form-control" required>
+                  <option value="">Selecione</option>
+                  <?php foreach ($sugestoes as $sug): ?>
+                    <option 
+                      value="<?= esc($sug['nome']) ?>" 
+                      data-modelos='<?= json_encode($sug['modelos_validos']) ?>'
+                      data-quantidade='<?= $sug['quantidade_sugerida'] ?>'
+                    >
+                      <?= esc($sug['nome']) ?> (Sugestão: <?= $sug['quantidade_sugerida'] ?> faltando)
+                    </option>
+                  <?php endforeach; ?>
+                </select>
               </div>
-              <button class="btn btn-success mt-3">Enviar Solicitação</button>
-            </form>
-          </div>
+
+              <div class="col-md-3">
+                <label>Modelo</label>
+                <select name="modelo" id="selectModelo" class="form-control" required>
+                  <option value="">Selecione um equipamento primeiro</option>
+                </select>
+              </div>
+
+              <div class="col-md-2">
+                <label>Quantidade</label>
+                <input type="number" name="quantidade" id="inputQuantidade" class="form-control" min="1" required>
+              </div>
+
+              <div class="col-md-3">
+                <label>Valor Unitário (R$)</label>
+                <input type="number" name="valor_unitario" class="form-control" min="0" step="0.01" required>
+              </div>
+            </div>
+            <button class="btn btn-success mt-3">Enviar Solicitação</button>
+          </form>
         </div>
+      </div>
+
+      <script>
+      document.getElementById('selectEquipamento').addEventListener('change', function() {
+        const selecionado = this.selectedOptions[0];
+        const modelos = JSON.parse(selecionado.dataset.modelos || '[]');
+        const quantidadeSugestao = parseInt(selecionado.dataset.quantidade || '1');
+
+        // Atualiza select de modelos
+        const modeloSelect = document.getElementById('selectModelo');
+        modeloSelect.innerHTML = '';
+        if(modelos.length > 0){
+          modelos.forEach(m => {
+            const option = document.createElement('option');
+            option.value = m;
+            option.textContent = m;
+            modeloSelect.appendChild(option);
+          });
+        } else {
+          const option = document.createElement('option');
+          option.value = '';
+          option.textContent = 'Nenhum modelo disponível';
+          modeloSelect.appendChild(option);
+        }
+
+        // Atualiza campo de quantidade com a sugestão
+        const inputQuantidade = document.getElementById('inputQuantidade');
+        inputQuantidade.value = quantidadeSugestao > 0 ? quantidadeSugestao : 1;
+        inputQuantidade.max = quantidadeSugestao > 0 ? quantidadeSugestao : '';
+      });
+      </script>
+
       <?php endif; ?>
+
       <?php if ($tipoUsuario === 'admin'): ?>
         <form method="get" action="">
             <label>Estado:</label>
@@ -175,8 +217,7 @@
                 </select>
             <?php endif; ?>
         </form>
-        <?php endif; ?>
-
+      <?php endif; ?>
 
       <!-- Tabela de compras -->
       <div class="card">
@@ -240,19 +281,11 @@
                       <?php endif; ?>
                     </td>
                     <td>
-                      <?php if (
-                        $compra['status'] === 'pendente' &&
-                        session('tipo') === 'tecnico' &&
-                        session('user_id') === $compra['usuario_id']
-                      ): ?>
+                      <?php if ($compra['status'] === 'pendente' && session('tipo') === 'tecnico' && session('user_id') === $compra['usuario_id']): ?>
                         <a href="<?= base_url('/compras/entregar/' . $compra['id']) ?>" class="btn btn-sm btn-success">Marcar como Entregue</a>
                       <?php endif; ?>
 
-                      <?php if (
-                        $compra['status'] === 'entregue' &&
-                        session('tipo') === 'tecnico' &&
-                        session('user_id') === $compra['usuario_id']
-                      ): ?>
+                      <?php if ($compra['status'] === 'entregue' && session('tipo') === 'tecnico' && session('user_id') === $compra['usuario_id']): ?>
                         <form action="<?= base_url('/compras/enviarNF/' . $compra['id']) ?>" method="post" enctype="multipart/form-data" class="mt-2">
                           <?= csrf_field() ?>
                           <input type="file" name="documento_nf" class="form-control-file mb-1" required>

@@ -30,8 +30,7 @@
       position: fixed;
       width: 100%;
       bottom: 0;
-    }
-
+  }
 
   .row > [class*='col-'] {
     padding-left: 8px !important;
@@ -51,7 +50,7 @@
           <select name="unidade" id="unidade" class="form-control" onchange="this.form.submit()">
             <option value="">Todas as unidades</option>
             <?php foreach($unidadesEstado as $unidade): ?>
-              <option value="<?= esc($unidade) ?>" <?= (isset($unidadeFiltro) && $unidadeFiltro === $unidade) ? 'selected' : '' ?>>
+              <option value="<?= esc($unidade) ?>" <?= (!empty($unidadeFiltro) && $unidadeFiltro === $unidade) ? 'selected' : '' ?>>
                 <?= esc($unidade) ?>
               </option>
             <?php endforeach; ?>
@@ -59,9 +58,8 @@
         </form>   
       <?php endif; ?> 
 
-
       <?php if ($tipoUsuario === 'admin'): ?>
-      <form method="get" class="mb-1">
+        <form method="get" class="mb-1">
           <label for="estado_filtro">Estado:</label>
           <select name="estado_filtro" id="estado_filtro" class="form-control" onchange="this.form.submit()">
               <option value="">-- Todos --</option>
@@ -71,15 +69,15 @@
           </select>
 
           <?php if (!empty($estadoFiltro)): ?>
-          <label for="unidade_filtro">Unidade:</label>
-          <select name="unidade_filtro" id="unidade_filtro" class="form-control" onchange="this.form.submit()">
-              <option value="">-- Todas --</option>
-              <?php foreach ($unidadesEstado as $unidade): ?>
-                  <option value="<?= $unidade ?>" <?= ($unidadeFiltro === $unidade) ? 'selected' : '' ?>><?= $unidade ?></option>
-              <?php endforeach; ?>
-          </select>
+            <label for="unidade_filtro">Unidade:</label>
+            <select name="unidade_filtro" id="unidade_filtro" class="form-control" onchange="this.form.submit()">
+                <option value="">-- Todas --</option>
+                <?php foreach ($unidadesEstado as $unidade): ?>
+                    <option value="<?= $unidade ?>" <?= ($unidadeFiltro === $unidade) ? 'selected' : '' ?>><?= $unidade ?></option>
+                <?php endforeach; ?>
+            </select>
           <?php endif; ?>
-      </form>
+        </form>
       <?php endif; ?>
 
       <?php if (session()->getFlashdata('msg')): ?>
@@ -165,16 +163,14 @@
                     <td>
                       <?php if (!empty($e['termo_envio'])): ?>
                         <a href="<?= base_url('writable/uploads/termos/' . $e['termo_envio']) ?>" target="_blank">Ver Termo</a>
-                      <?php else: ?>
-                        -
+                      <?php else: ?>-
                       <?php endif; ?>
                     </td>
                     <td><?= $e['confirmado_envio'] ? 'Sim' : 'Não' ?></td>
                     <td>
                       <?php if (!empty($e['termo_devolucao'])): ?>
                         <a href="<?= base_url('writable/uploads/termos/' . $e['termo_devolucao']) ?>" target="_blank">Ver Termo</a>
-                      <?php else: ?>
-                        -
+                      <?php else: ?>-
                       <?php endif; ?>
                     </td>
                     <td><?= $e['confirmado_devolucao'] ? 'Sim' : 'Não' ?></td>
@@ -183,22 +179,18 @@
                         $sessUnidade = session()->get('unidade');
                         $sessTipo = session()->get('tipo');
 
-                        // Botão para registrar devolução (só para usuário da unidade_destino e que ainda não devolveu)
                         if (!$e['confirmado_devolucao'] && $sessUnidade === $e['unidade_destino']): ?>
                           <form action="<?= base_url('/emprestimos/registrarDevolucao/' . $e['id']) ?>" method="post" enctype="multipart/form-data" style="margin-bottom:5px;">
                             <?= csrf_field() ?>
                             <input type="file" name="termo_devolucao" accept=".pdf,image/*" required style="margin-bottom:5px;">
                             <button type="submit" class="btn btn-warning btn-sm">Registrar Devolução</button>
                           </form>
-                        <?php
-                        // Botão para confirmar resolução da devolução (só para usuário da unidade_origem e se devolução não foi confirmada)
-                        elseif (!$e['devolucao_resolvida'] && $sessUnidade === $e['unidade_origem'] && $e['confirmado_devolucao']): ?>
+                        <?php elseif (!$e['devolucao_resolvida'] && $sessUnidade === $e['unidade_origem'] && $e['confirmado_devolucao']): ?>
                           <form action="<?= base_url('/emprestimos/confirmarResolucaoDevolucao/' . $e['id']) ?>" method="post">
                             <?= csrf_field() ?>
                             <button type="submit" class="btn btn-success btn-sm">Confirmar Recebimento</button>
                           </form>
-                        <?php else: ?>
-                          -
+                        <?php else: ?>-
                         <?php endif; ?>
                     </td>
                   </tr>

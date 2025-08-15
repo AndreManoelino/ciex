@@ -70,6 +70,10 @@ class Compras extends BaseController
                 $unidadesEstado = $this->getUnidades()[$filtroEstado] ?? [];
             }
         }
+        $sugestoes = [];
+        if ($tipoUsuario === 'tecnico') {
+            $sugestoes = $this->getSugestoesDeCompra();
+        }
 
         echo view('templates/header');
         echo view('compras/index', [
@@ -78,7 +82,8 @@ class Compras extends BaseController
             'estadoFiltro' => $filtroEstado,
             'unidadeFiltro' => $filtroUnidade,
             'estados' => $estados,
-            'unidades' => $unidadesEstado
+            'unidades' => $unidadesEstado,
+            'sugestoes' => $sugestoes
         ]);
         echo view('templates/footer');
     }
@@ -215,11 +220,20 @@ class Compras extends BaseController
             return redirect()->to('/compras')->with('erro', 'Compra não encontrada.');
         }
 
+        // Atualiza o estoque do equipamento
+        $this->atualizarQuantidadeEquipamento(
+            $compra['nome'],
+            $compra['modelo'],
+            (int)$compra['quantidade'],
+            $compra['unidade']
+        );
+
         // Atualiza o status para 'entregue'
         $this->compraModel->update($id, ['status' => 'entregue']);
 
-        return redirect()->to('/compras')->with('msg', 'Compra marcada como entregue com sucesso.');
+        return redirect()->to('/compras')->with('msg', 'Compra marcada como entregue e estoque atualizado.');
     }
+
 
 
     public function getComprasPorPermissao($tipo, $estado, $unidade, $filtroUnidade = null)
@@ -288,7 +302,101 @@ class Compras extends BaseController
             'Parana' => ['Administração Central','Apucarama','Arapongas','Araucaria','Campo Largo','Cascavel','Colombo','Curitiba - Boa Vista','Curitiba - Centro','Curitiba - Pinheirinho','Foz do Iguaçu','Guarapuava','Londrina','Maringa','Paranagua','Pinhais','Ponta Grossa','São José dos Pinhais','Toledo','UDS','Umurama'],
         ];
     }
+    private function getSugestoesDeCompra()
+    {
+        $equipamentosBanco = $this->equipamentoModel->findAll(); // equipamentos já cadastrados
+        $todosEquipamentos = $this->getEquipamentosEModulos();   // todos os equipamentos possíveis
+        $sugestoes = [];
+
+        foreach ($todosEquipamentos as $nome => $modelosValidos) {
+            // Inicializa quantidade total do equipamento por modelo
+            foreach ($modelosValidos as $modelo) {
+                $quantidadeBackup = 0;
+                foreach ($equipamentosBanco as $eq) {
+                    if ($eq['nome'] === $nome && $eq['modelo'] === $modelo) {
+                        $quantidadeBackup = (int) $eq['quantidade_backup'];
+                        break;
+                    }
+                }
+
+                $limiteBackup = 50;
+                $faltando = ($quantidadeBackup < $limiteBackup) ? ($limiteBackup - $quantidadeBackup) : 0;
+
+                $sugestoes[] = [
+                    'nome' => $nome,
+                    'modelo' => $modelo,
+                    'quantidade_sugerida' => $faltando,
+                    'quantidade_atual_backup' => $quantidadeBackup,
+                    'modelos_validos' => [$modelo] // garante que a chave sempre exista
+                ];
+            }
+        }
+
+        return $sugestoes;
+    }
 
 
+
+    private function atualizarQuantidadeEquipamento($nome, $modelo, $quantidadeComprada, $unidade)
+    {
+        $equipamento = $this->equipamentoModel
+            ->where('nome', $nome)
+            ->where('modelo', $modelo)
+            ->where('unidade', $unidade)
+            ->first();
+
+        if ($equipamento) {
+            // Soma quantidade existente + comprada
+            $novaQuantidade = (int)$equipamento['quantidade_backup'] + $quantidadeComprada;
+            $this->equipamentoModel->update($equipamento['id'], ['quantidade_backup' => $novaQuantidade]);
+        } else {
+            // Se não existe, cria um novo registro
+            $this->equipamentoModel->insert([
+                'nome' => $nome,
+                'modelo' => $modelo,
+                'quantidade_backup' => $quantidadeComprada,
+                'unidade' => $unidade
+            ]);
+        }
+    }
+
+
+    public function getEquipamentosEModulos()
+    {
+        return [
+            'Televisão'           => ['Samsung 43 Polegadas','Samsung 50 Polegadas','Philco 43 Polegadas'],
+
+            'Notebook'            => ['Dell Inspiron 15','Lenovo ThinkPad'],
+
+            'Impressora'          => ['HP LaserJet 1020','Epson EcoTank L3150'],
+
+            'Pad Assinatura'      => ['AKYAMA AK560', 'Pad Assinatura Topaz'],
+
+            'Monitor '            => ['Monitor RG DELL 24 Polegadas','Monitor AOC','Monitor Itaú Tec'],
+
+            'Suporte'             => ['Televisão','Tablet','Câmera'],
+
+            'Biombo'              => ['Para RG ou CNH'],
+
+            'Leitor Biomêtrico'   => ['Leitor biométrico Akiyama Kojak AK06-12741','Leitor biométrico CNH','Leitor Biométrico Finger-Tech'],
+
+            'Fonte para câmera'   => ['Fonte ACK-e10 Adaptador Ac Canon T3 A T7'],
+
+            'Cabos de Energia'    =>['Desktop', 'Televisão','Rádio comunicador', 'Fortigate','Carregador de Tablet '],
+            
+            'Tablet de Avaliação' => ['Tablet A9', 'Tablet A7'],
+
+            'Fita para Fixação'   => ['3M  dupla face 3 metros', '3M dupla face 2 metros','3M dupla face 1 metro'],
+
+            'Pendrive'            => ['Sandisk Cruzer Blade 16GB','Sandisk Cruzer Blade 32GB','Sandisk Ultra Flair 64GB','Kingston DataTraveler 16GB','Kingston DataTraveler 32GB','Kingston DataTraveler 64GB','Multilaser Twist 16GB','Multilaser Twist 32GB','Sony MicroVault 16GB','Sony MicroVault 32GB'],
+
+            'Switch'              => ["Aruba 2930F 48G PoE+", "Cisco Catalyst 2960X 50-Port PoE+", "Ubiquiti UniFi Switch 30-Port PoE"],
+            'Patch Cord (Cabo de Rede)' => ['5 metros','4 metros','3 metros','2 metros','1 metro'],
+            'Cabo de Imagem'           => ['HDMI','VGA '],
+            'Desktop'             => ['HP i5', 'DEll i7'],
+            'Patch Panel'        => ['Cat6 24 Portas  Rj45','Cat6 12 Portas  Rj45'],
+
+        ];
+    }
 
 }
