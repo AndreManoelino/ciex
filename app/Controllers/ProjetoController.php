@@ -28,7 +28,7 @@ class ProjetoController extends BaseController
         $mostrarConcluidos = $this->request->getGet('mostrar_concluidos') ?? '1';
 
 
-        if ($tipo === 'admin') {
+        if ($tipo === 'admin' || $tipo === 'administrador') {
             // Admin pode ver todos os estados e unidades
             $estados = $this->getEstados();
             $estadoFiltro = $this->request->getGet('estado') ?? null;
@@ -72,7 +72,7 @@ class ProjetoController extends BaseController
     }
     private function getEstados()
     {
-        return ['Minas Gerais', 'São Paulo', 'Rio de Janeiro'];
+        return ['Minas Gerais', 'São Paulo', 'Rio de Janeiro','Ceara','Parana'];
     }
 
     private function getUnidades()
@@ -94,6 +94,8 @@ class ProjetoController extends BaseController
                 'Poupa Tempo Recreio dos Bandeirantes', 'Poupa Tempo Zona Oeste',
                 'Poupa Tempo Baixada','Poupa Tempo São Gonçalo','Poupa Tempo Bangu'
             ],
+            'Ceara' => ['Unidade 1', 'Unidade 2', 'Unidade 3'],
+            'Parana' => ['Unidade A', 'Unidade B', 'Unidade C'],
         ];
     }
 

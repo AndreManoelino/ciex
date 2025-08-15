@@ -95,6 +95,8 @@ class Clientes extends Controller
                     'Poupa Tempo Recreio dos Bandeirantes', 'Poupa Tempo Zona Oeste',
                     'Poupa Tempo Baixada', 'Poupa Tempo São Gonçalo', 'Poupa Tempo Bangu'
                 ],
+                'Ceara' => ['Unidade 1', 'Unidade 2', 'Unidade 3'],
+                'Parana' => ['Unidade A', 'Unidade B', 'Unidade C'],
             ];
         }
 

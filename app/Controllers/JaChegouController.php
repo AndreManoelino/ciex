@@ -37,7 +37,7 @@ class JaChegouController extends Controller
     }
 
 
- // opcional se você quiser importar diretamente
+ 
 
     public function inserir()
     {

@@ -179,10 +179,10 @@ class Autenticacao extends Controller
         return view('autenticador/recuperar_senha');
     }
 
-    // Métodos auxiliares para evitar repetição
+    // Função atribuindo os estados para autenticação 
     private function getEstados()
     {
-        return ['Minas Gerais', 'São Paulo', 'Rio de Janeiro'];
+        return ['Minas Gerais', 'São Paulo', 'Rio de Janeiro','Ceara','Parana'];
     }
 
     private function getUnidades()
@@ -197,6 +197,8 @@ class Autenticacao extends Controller
             ],
             'São Paulo' => ['Poupatempo Sé', 'Poupatempo Santo Amaro', 'Poupatempo Itaquera','Poupatempo Luz','Poupatempo Móvel (Cidade Tiradentes)','Poupatempo Móvel (Ipiranga)','Poupatempo Guarulhos','Poupatempo Campinas'],
             'Rio de Janeiro' => ['Poupa Tempo Recreio dos Bandeirantes', 'Poupa Tempo Zona Oeste','Poupa Tempo Baixada','Poupa Tempo São Gonçalo','Poupa Tempo Bangu'],
+            'Ceara' => ['Unidade 1', 'Unidade 2', 'Unidade 3'],
+            'Parana' => ['Unidade A', 'Unidade B', 'Unidade C'],
         ];
     }
 

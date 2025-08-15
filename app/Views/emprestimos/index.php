@@ -4,9 +4,9 @@
   input.form-control,
   select.form-control,
   .form-control-file {
-    height: 30px !important;
-    padding: 4px 8px !important;
-    font-size: 14px !important;
+    height: 3;
+    padding: 3;
+    font-size: 3;
   }
 
   button.btn {
@@ -46,7 +46,7 @@
       <h2>Gerenciamento de Empréstimos</h2>
 
       <?php if ($tipoUsuario === 'supervisor'): ?>
-        <form method="get" action="<?= base_url('/emprestimos') ?>" class="mb-3">
+        <form method="get" action="<?= base_url('/emprestimos') ?>" class="mb-2">
           <label for="unidade">Filtrar por Unidade:</label>
           <select name="unidade" id="unidade" class="form-control" onchange="this.form.submit()">
             <option value="">Todas as unidades</option>
@@ -61,7 +61,7 @@
 
 
       <?php if ($tipoUsuario === 'admin'): ?>
-      <form method="get" class="mb-4">
+      <form method="get" class="mb-1">
           <label for="estado_filtro">Estado:</label>
           <select name="estado_filtro" id="estado_filtro" class="form-control" onchange="this.form.submit()">
               <option value="">-- Todos --</option>

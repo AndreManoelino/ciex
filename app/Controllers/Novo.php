@@ -151,7 +151,7 @@ class Autenticacao extends Controller
 
     private function getEstados()
     {
-        return ['Minas Gerais', 'São Paulo', 'Rio de Janeiro'];
+        return ['Minas Gerais', 'São Paulo', 'Rio de Janeiro','Ceara', 'Parana'];
     }
 
     private function getUnidades()
@@ -163,7 +163,9 @@ class Autenticacao extends Controller
                 'Paraiso', 'Sete Lagoas', 'Teófilo Otoni', 'Uberlândia', 'Varginha'
             ],
             'São Paulo' => ['Sé', 'Santo Amaro', 'Itaquera', 'Luz', 'Guarulhos', 'Campinas'],
-            'Rio de Janeiro' => ['Recreio', 'Zona Oeste', 'Baixada', 'São Gonçalo', 'Bangu']
+            'Rio de Janeiro' => ['Recreio', 'Zona Oeste', 'Baixada', 'São Gonçalo', 'Bangu'],
+            'Ceara' => ['Unidade 1', 'Unidade 2', 'Unidade 3'],
+            'Parana' => ['Unidade A', 'Unidade B', 'Unidade C'],
         ];
     }
 }

@@ -107,6 +107,8 @@ class MapeamentoRede extends BaseController
                 'Uberlândia Avançada','Varginha'],
             'São Paulo' => ['Poupatempo Sé', 'Poupatempo Santo Amaro', 'Poupatempo Itaquera','Poupatempo Luz','Poupatempo Móvel (Cidade Tiradentes)','Poupatempo Móvel (Ipiranga)','Poupatempo Guarulhos','Poupatempo Campinas'],
             'Rio de Janeiro' => ['Poupa Tempo Recreio dos Bandeirantes', 'Poupa Tempo Zona Oeste','Poupa Tempo Baixada','Poupa Tempo São Gonçalo','Poupa Tempo Bangu'],
+            'Ceara' => ['Unidade 1', 'Unidade 2', 'Unidade 3'],
+            'Parana' => ['Unidade A', 'Unidade B', 'Unidade C'],
         ];
         return $unidades[$estado] ?? [];
     }

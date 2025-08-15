@@ -83,7 +83,7 @@ class Equipamentos extends BaseController
     // Adiciona funções para admin
     private function getEstados()
     {
-        return ['Minas Gerais', 'São Paulo', 'Rio de Janeiro'];
+        return ['Minas Gerais', 'São Paulo', 'Rio de Janeiro','Ceara', 'Parana'];
     }
 
     private function getUnidadesPorEstado($estado)
@@ -96,6 +96,8 @@ class Equipamentos extends BaseController
                 'Uberlândia Avançada','Varginha'],
             'São Paulo' => ['Poupatempo Sé', 'Poupatempo Santo Amaro', 'Poupatempo Itaquera','Poupatempo Luz','Poupatempo Móvel (Cidade Tiradentes)','Poupatempo Móvel (Ipiranga)','Poupatempo Guarulhos','Poupatempo Campinas'],
             'Rio de Janeiro' => ['Poupa Tempo Recreio dos Bandeirantes', 'Poupa Tempo Zona Oeste','Poupa Tempo Baixada','Poupa Tempo São Gonçalo','Poupa Tempo Bangu'],
+            'Ceara' => ['Unidade 1', 'Unidade 2', 'Unidade 3'],
+            'Parana' => ['Unidade A', 'Unidade B', 'Unidade C'],
         ];
 
         return $unidades[$estado] ?? [];
@@ -233,7 +235,7 @@ class Equipamentos extends BaseController
             'Patch Cord (Cabo de Rede)' => ['5 metros','4 metros','3 metros','2 metros','1 metro'],
             'Cabo de Imagem'           => ['HDMI','VGA '],
             'Desktop'             => ['HP i5', 'DEll i7'],
-             'Patch Panel'        => ['Cat6 24 Portas  Rj45','Cat6 12 Portas  Rj45'],
+            'Patch Panel'        => ['Cat6 24 Portas  Rj45','Cat6 12 Portas  Rj45'],
 
         ];
     }
