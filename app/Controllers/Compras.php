@@ -119,7 +119,7 @@ class Compras extends BaseController
         $quantidadeAtualBackup = $existente ? (int) $existente['quantidade_backup'] : 0;
         if ($quantidadeAtualBackup + $quantidade > 50) {
             $disponivel = 50 - $quantidadeAtualBackup;
-            return redirect()->back()->with('erro', "Você só pode solicitar mais $disponivel desse equipamento.");
+            return redirect()->back()->with('erro', "Você não pode solicitar mais compras desse equipamento estoque completo.");
         }
 
         // Verificação de orçamento
@@ -283,7 +283,7 @@ class Compras extends BaseController
     }
     private function getEstados()
     {
-        return ['Minas Gerais', 'São Paulo', 'Rio de Janeiro'];
+        return ['Minas Gerais', 'São Paulo', 'Rio de Janeiro','Ceara','Parana'];
     }
 
     private function getUnidades()
