@@ -51,8 +51,7 @@
         <!-- LGPD -->
         <div class="tab-pane fade show active" id="lgpd" role="tabpanel">
           <div class="row">
-            <div class="col-md-9">
-              
+            <div class="col-md-9">              
               <p class="small">
                 Em  2008 foi o incio da jornada . 
               </p>
@@ -67,6 +66,14 @@
               </p>
               <ul class="small">
                 <li>Assinamos a primeira PPP administrativa do Brasil, transformando a gestão das unidades do programa UAI( Unidade de Atendimento Integardo) em Minas Gerais.</li>
+              </ul>
+            </div>
+            <div class="col-md-9">              
+              <p class="small">
+                Em  2011 Cada Estado, uma nova conexão: UAIs em Minas e Poupa Tempo RJ. 
+              </p>
+              <ul class="small">
+                <li>Inauguramos seis UAIs em Minas Gerais e expandimos para o Rio de Janeiro, com a abertura do Poupa Tempo em São Gonçalo, consolidando nossa presença em diferentes regiões.</li>
               </ul>
             </div>
             <div class="col-md-3 text-right">
