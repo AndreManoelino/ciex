@@ -4,6 +4,7 @@
   .row > [class*='col-'] {
     padding-left: 8px !important;
     padding-right: 8px !important;
+    font-weight: 10;
   }
   </style>
 
@@ -19,6 +20,7 @@
       <div class="alert alert-success">
         <h4 class="mb-1" style="font-size: 1.25rem;">Bem-vindo ao Sistema de Tecnologia da Informação da CIX, <?= session('nome') ?>!</h4>
         <p class="mb-0" style="font-size: 0.95rem;"><?= session('unidade') ?> - <?= session('estado') ?></p>
+        <p> Cargo :  <?=session('tipo')?></p>
       </div>
     </div>
   </div>
@@ -62,7 +64,7 @@
             </div>
             <div class="col-md-9">              
               <p class="small">
-                Em  2010 Parecerias qye impulsionam o futuro: Pareceria Público Privada em Minas Gerais. 
+                Em  2010 Parecerias que impulsionam o futuro: Pareceria Público Privada em Minas Gerais. 
               </p>
               <ul class="small">
                 <li>Assinamos a primeira PPP administrativa do Brasil, transformando a gestão das unidades do programa UAI( Unidade de Atendimento Integardo) em Minas Gerais.</li>
@@ -77,7 +79,7 @@
               </ul>
             </div>
             <div class="col-md-3 text-right">
-              <img src="<?= base_url('theme/dist/img/lgpd.jpg') ?>" alt="LGPD" class="img-fluid" style="max-height: 140px;">
+              <img src="<?= base_url('theme/dist/img/lgpd.jpg') ?>" alt="LGPD" class="img-fluid" style="max-height: 190px;">
             </div>
           </div>
         </div>
