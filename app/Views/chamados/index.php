@@ -3,7 +3,8 @@
 
 <head><style>
   body {
-    background: linear-gradient(135deg, #f0fff0, #fffbe6);
+    background: url('<?= base_url("theme/dist/img/cix_case.jpg") ?>') no-repeat center center;
+    background-size: cover; /* cobre toda a área */
     font-family: "Segoe UI", sans-serif;
   }
 
@@ -13,6 +14,13 @@
     font-weight: bold;
     margin-bottom: 25px;
   }
+
+  .content-wrapper {
+    background: url('/theme/dist/img/cix_case.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+
+
 
   .form-label, label {
     font-size: 13px;

@@ -1,6 +1,38 @@
 <?= $this->include('templates/sidebar') ?>
 
+<?= $this->include('templates/sidebar') ?>
+
 <style>
+  nav.sidebar {
+    position: fixed;
+    width: 250px;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    background: url('<?= base_url("theme/dist/img/cix_case.jpg") ?>') no-repeat center center;
+    background-size: cover;
+    transition: left 0.3s ease;
+    z-index: 1050; /* acima do conteúdo */
+  }
+  
+  .content-wrapper {
+    background: url('/theme/dist/img/cix_case.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+
+
+  /* overlay para leitura */
+  nav.sidebar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(45, 62, 80, 0.8); 
+    z-index: -1;
+  }
+
   input.form-control,
   select.form-control,
   .form-control-file {
@@ -20,16 +52,16 @@
   }
 
   footer {
-      background-color: orange;
-      color: white;
-      text-align: center;
-      padding: 12px;
-      font-size: 13px;
-      font-weight: bold;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.15);
-      position: fixed;
-      width: 100%;
-      bottom: 0;
+    background-color: orange;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: bold;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.15);
+    position: fixed;
+    width: 100%;
+    bottom: 0;
   }
 
   .row > [class*='col-'] {
@@ -37,6 +69,7 @@
     padding-right: 8px !important;
   }
 </style>
+
 
 <div class="content-wrapper">
   <div class="content-header">

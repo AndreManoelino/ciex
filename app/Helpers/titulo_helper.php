@@ -10,7 +10,7 @@ if (! function_exists('titulo')) {
      */
     function titulo(string $texto, array $atributos = []): string
     {
-        $defaultStyle = "text-align:center; color:black; font-weight:bold; margin-bottom:20px; text-shadow:1px 1px 2px #ffa500;";
+        $defaultStyle = "text-align:center; color:green; font-weight:bold; margin-bottom:20px; text-shadow:1px 1px 2px black;";
 
         // Permite adicionar mais atributos via array (class, id, style extra)
         $attrString = "";

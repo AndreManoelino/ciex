@@ -237,7 +237,7 @@ class Equipamentos extends BaseController
             'Patch Cord (Cabo de Rede)' => ['5 metros','4 metros','3 metros','2 metros','1 metro'],
             'Cabo de Imagem'           => ['HDMI','VGA '],
             'Desktop'             => ['HP i5', 'DEll i7'],
-            'Patch Panel'        => ['Cat6 24 Portas  Rj45','Cat6 12 Portas  Rj45'],
+            'Patch Panel'        => ['24 Portas','12 Portas'],
 
         ];
     }

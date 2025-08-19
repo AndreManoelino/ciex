@@ -12,7 +12,7 @@ class JaChegouController extends Controller
 
     public function __construct()
     {
-        helper(['form', 'url', 'session','form_helper']);
+        helper(['form', 'url', 'session','form_helper','valida']);
         $this->model = new JaChegouModel();
     }
 
@@ -35,9 +35,6 @@ class JaChegouController extends Controller
         echo view('ja_chegou/index', $data);
         echo view('templates/footer', $data);
     }
-
-
- 
 
     public function inserir()
     {

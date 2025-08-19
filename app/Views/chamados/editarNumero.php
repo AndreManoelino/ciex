@@ -19,5 +19,11 @@
         </div>
     </div>
 </div>
+<style>
+  .content-wrapper {
+    background: url('/theme/dist/img/cix_case.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+</style>
 
 <?= $this->include('templates/footer') ?>

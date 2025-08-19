@@ -20,7 +20,7 @@ class Clientes extends Controller
     public function novo()
     {
         helper(['localizacao', 'permissao', 'titulo']);
-         $session = session();
+        $session = session();
 
         $tipoUsuario = getTipoUsuario();
         $estadoUsuario = getEstadoUsuario();

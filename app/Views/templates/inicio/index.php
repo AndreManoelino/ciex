@@ -1,9 +1,6 @@
 
 <header>
   <style>
-
-
-
   .row > [class*='col-'] {
     padding-left: 8px !important;
     padding-right: 8px !important;

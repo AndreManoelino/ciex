@@ -1,3 +1,10 @@
+<style>
+  .content-wrapper {
+    background: url('/theme/dist/img/cix_case.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+</style>
+
 <div class="container-fluid">
   <!-- Filtro por unidade (visível apenas para supervisor) -->
   <?php if (session()->get('tipo_usuario') === 'supervisor'): ?>
@@ -159,3 +166,4 @@
     inputChamadoId.value = chamadoId;
   });
 </script>
+

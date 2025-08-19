@@ -26,7 +26,7 @@ class UsuarioModel extends Model
     }
     public function findByCpfNormalized(string $cpfLimpo)
     {
-        // Atenção: esta query pode variar conforme o banco (exemplo MySQL)
+        // Somente para teste porque esta query pode variar conforme o banco de dados que for usado como postgres etc 
         return $this->where("REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), ' ', '')", $cpfLimpo)->first();
     }
 

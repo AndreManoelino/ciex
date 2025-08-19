@@ -11,9 +11,50 @@ $solicitacoes       = $solicitacoes ?? [];
 $tipoUsuario = session('tipo');
 
 $unidadeTecnico = session('unidade') ?? '';
-$nomeSupervisor = ''; // Ajuste conforme sua lógica, ou deixe vazio
+$nomeSupervisor = ''; 
 $nomeTecnico    = session('nome') ?? '';
 ?>
+<style>
+  .content-wrapper {
+    background: url('/theme/dist/img/cix_case.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  /* TITULOS / LABELS / CABEÇALHO TABELA */
+  h1, h2, h3, h4, h5, h6,
+  label,
+  .content-header,
+  .table thead th {
+    color: lightgrayblack !important; /* <<< COR DO TEXTO (títulos, labels e th) */
+    font-weight: bold;
+  }
+
+  /* CAMPOS DE FORMULÁRIO */
+  .form-control,
+  .form-control-file,
+  select {
+    background-color: white !important; /* <<< FUNDO DOS CAMPOS */
+    border: 2px solid black !important; /* <<< BORDA DOS CAMPOS */
+    color:  black !important; /* <<< COR DO TEXTO DENTRO DO CAMPO */
+    font-weight: bold;
+    box-shadow: 0 2px 6px black; /* <<< SOMBRA DOS CAMPOS */
+  }
+
+  /* QUANDO O CAMPO ESTÁ EM FOCO */
+  .form-control:focus, select:focus {
+    background-color: white !important; /* <<< FUNDO DO CAMPO AO CLICAR */
+    border-color: #0056b3 !important;  /* <<< COR DA BORDA AO CLICAR */
+    box-shadow: 0 0 8px rgba(0,123,255,0.7); /* <<< BRILHO AO CLICAR */
+  }
+
+  /* BOTÕES */
+  .btn {
+    font-weight: bold;
+    border-radius: 6px;
+    /* você pode mudar a cor do botão via class bootstrap (btn-primary, btn-success, etc) */
+  }
+</style>
+
 
 <div class="content-wrapper">
   <div class="content-header">
@@ -32,53 +73,56 @@ $nomeTecnico    = session('nome') ?? '';
         <form action="<?= base_url('/clientes/salvar') ?>" method="post" enctype="multipart/form-data" class="mb-4">
           <?= csrf_field() ?>
           <!-- Campos do técnico -->
-          <div class="form-group">
-            <label for="nome_empresa">Nome da Empresa</label>
-            <input type="text" name="nome_empresa" class="form-control" required>
-          </div>
           <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
+              <label for="nome_empresa">Nome da Empresa</label>
+              <input type="text" name="nome_empresa" class="form-control" required>
+            </div>
+          
+            <div class="form-group col-md-3">
               <label for="cidade">Cidade</label>
               <input type="text" name="cidade" class="form-control" required>
             </div>
-            <div class="form-group col-md-3">
-              <label for="estado">Estado</label>
-              <input type="text" name="estado" class="form-control" value="<?= esc(session('estado')) ?>" readonly required>
-            </div>
-            <div class="form-group col-md-3">
-              <label for="cnpj">CNPJ</label>
-              <input type="text" name="cnpj" class="form-control" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              <label for="endereco_rua">Endereço (Rua)</label>
-              <input type="text" name="endereco_rua" class="form-control" required>
-            </div>
-            <div class="form-group col-md-2">
-              <label for="bairro">Bairro</label>
-              <input type="text" name="bairro" class="form-control" required>
-            </div>
-            <div class="form-group col-md-2">
-              <label for="numero">Número</label>
-              <input type="text" name="numero" class="form-control" required>
-            </div>
-          </div>
-          <div class="form-group col-md-3">
-            <label for="nome_equipamento">Nome do Equipamento</label>
-            <input type="text" name="nome_equipamento" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label for="unidade">Unidade</label>
-            <input type="text" name="unidade" class="form-control" value="<?= esc($unidadeTecnico) ?>" readonly>
-          </div>
-          <div class="form-group">
-            <label for="responsavel">Responsável</label>
-            <input type="text" name="responsavel" class="form-control" value="<?= esc($nomeSupervisor) ?> / <?= esc($nomeTecnico) ?>" readonly>
-          </div>
-          <div class="form-group">
-            <label for="documento_orcamento">Orçamento (PDF, JPG, PNG)</label>
-            <input type="file" name="documento_orcamento" class="form-control-file" accept=".pdf,.jpg,.jpeg,.png" required>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="estado">Estado</label>
+                <input type="text" name="estado" class="form-control" value="<?= esc(session('estado')) ?>" readonly required>
+              </div>
+              <div class="form-group col-md-5">
+                <label for="cnpj">CNPJ</label>
+                <input type="text" name="cnpj" class="form-control" required>
+              </div>
+              </div>
+          
+              <div class="form-group col-md-3">
+                <label for="endereco_rua">Endereço (Rua)</label>
+                <input type="text" name="endereco_rua" class="form-control" required>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="bairro">Bairro</label>
+                <input type="text" name="bairro" class="form-control" required>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="numero">Número</label>
+                <input type="text" name="numero" class="form-control" required>
+              </div>
+            
+              <div class="form-group col-md-3">
+                <label for="nome_equipamento">Nome do Equipamento</label>
+                <input type="text" name="nome_equipamento" class="form-control" required>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="unidade">Unidade</label>
+                <input type="text" name="unidade" class="form-control" value="<?= esc($unidadeTecnico) ?>" readonly>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="responsavel">Responsável</label>
+                <input type="text" name="responsavel" class="form-control" value="<?= esc($nomeSupervisor) ?> / <?= esc($nomeTecnico) ?>" readonly>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="documento_orcamento">Orçamento (PDF, JPG, PNG)</label>
+                <input type="file" name="documento_orcamento" class="form-control-file" accept=".pdf,.jpg,.jpeg,.png" required>
+              </div>
           </div>
           <button type="submit" class="btn btn-primary">Enviar Solicitação</button>
         </form>

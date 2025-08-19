@@ -1,13 +1,15 @@
+
 <header>
   <style>
-
-
-
   .row > [class*='col-'] {
     padding-left: 8px !important;
     padding-right: 8px !important;
   }
   </style>
+
+
+</header>
+
 <?= $this->include('templates/sidebar') ?>
 
 <!-- Content Wrapper -->
@@ -27,7 +29,7 @@
       <!-- Abas -->
       <ul class="nav nav-tabs" id="infoTabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" id="lgpd-tab" data-toggle="tab" href="#lgpd" role="tab">LGPD</a>
+          <a class="nav-link active" id="lgpd-tab" data-toggle="tab" href="#lgpd" role="tab">Sobre a CiX</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="conduta-tab" data-toggle="tab" href="#conduta" role="tab">Conduta em TI</a>
@@ -50,15 +52,21 @@
         <div class="tab-pane fade show active" id="lgpd" role="tabpanel">
           <div class="row">
             <div class="col-md-9">
-              <h5 class="mb-2">Lei Geral de Proteção de Dados (LGPD)</h5>
+              
               <p class="small">
-                A LGPD (Lei nº 13.709/2018) estabelece diretrizes para o uso, tratamento e proteção dos dados pessoais no Brasil.
-                Todos os colaboradores devem estar atentos à coleta, uso e armazenamento correto das informações.
+                Em  2008 foi o incio da jornada . 
               </p>
               <ul class="small">
-                <li>Não compartilhe dados de terceiros sem consentimento.</li>
-                <li>Evite armazenar senhas em arquivos de texto ou planilhas.</li>
-                <li>Respeite os princípios de necessidade, segurança e finalidade dos dados.</li>
+                <li>Em 2008 iniciamos nossa Joranada na prestação de serviços públicos,  através de centrais de atendimento ao Cidadão
+                , formato one stop shop. Planejando, implantando e gerenciando unidades de atendimento presencial ao cidadão.</li>
+              </ul>
+            </div>
+            <div class="col-md-9">              
+              <p class="small">
+                Em  2010 Parecerias qye impulsionam o futuro: Pareceria Público Privada em Minas Gerais. 
+              </p>
+              <ul class="small">
+                <li>Assinamos a primeira PPP administrativa do Brasil, transformando a gestão das unidades do programa UAI( Unidade de Atendimento Integardo) em Minas Gerais.</li>
               </ul>
             </div>
             <div class="col-md-3 text-right">
@@ -297,3 +305,8 @@
     </div>
   </div>
 </div>
+
+
+<!-- SCRIPTS NECESSÁRIOS PARA FUNCIONAMENTO DAS ABAS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>

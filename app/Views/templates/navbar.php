@@ -13,7 +13,8 @@
         height: 100vh;
         left: 0;
         top: 0;
-        background-color: #2d3e50;
+        background: url('/theme/dist/img/cix_case.jpg') no-repeat center center;
+        background-size: cover; /
         transition: left 0.3s ease;
         z-index: 1050; /* acima do conteúdo */
       }
