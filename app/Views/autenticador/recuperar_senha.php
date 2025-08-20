@@ -68,15 +68,25 @@
             font-weight: 500;
         }
     </style>
+    <script>
+        function validarSenhas() {
+            const senha = document.getElementById("senha").value;
+            const confirmar = document.getElementById("confirmar_senha").value;
+
+            if (senha !== confirmar) {
+                alert("As senhas não conferem. Por favor, verifique.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
 
-<!-- TOPO COM TÍTULO PROFISSIONAL -->
 <header>
     <h2>Sistema Tec <span>CIX-CITZEN</span></h2>
 </header>
 
-<!-- CONTEÚDO CENTRAL -->
 <div class="main-content">
     <div class="form-container">
         <h4 class="text-center text-success mb-4">Recuperar Senha</h4>
@@ -85,27 +95,46 @@
             <div class="alert alert-danger"> <?= esc($errors) ?> </div>
         <?php endif; ?>
 
-        <form method="post" action="<?= base_url('/recuperar-senha') ?>">
+        <?php if (session()->getFlashdata('cpf')): ?>
+            <div class="alert alert-warning text-center">
+                <strong>Primeiro acesso!</strong><br>
+                Defina sua nova senha para continuar.
+            </div>
+        <?php endif; ?>
+
+        <form method="post" action="<?= base_url('/recuperar-senha') ?>" onsubmit="return validarSenhas()">
             <div class="mb-3">
                 <label class="form-label">CPF:</label>
-                <input type="text" name="cpf" class="form-control" required>
+                <input
+                    type="text"
+                    name="cpf"
+                    class="form-control"
+                    value="<?= session()->getFlashdata('cpf') ?? '' ?>"
+                    <?= session()->getFlashdata('cpf') ? 'readonly' : '' ?>
+                    required
+                >
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Nova Senha:</label>
-                <input type="password" name="senha" class="form-control" required>
+                <input type="password" id="senha" name="senha" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Confirmar Nova Senha:</label>
+                <input type="password" id="confirmar_senha" name="confirmar_senha" class="form-control" required>
             </div>
 
             <button type="submit" class="btn btn-success w-100">Atualizar Senha</button>
         </form>
 
-        <p class="text-center mt-3">
-            <a href="<?= base_url('/login') ?>" class="text-decoration-none text-success">Voltar ao Login</a>
-        </p>
+        <?php if (!session()->getFlashdata('cpf')): ?>
+            <p class="text-center mt-3">
+                <a href="<?= base_url('/login') ?>" class="text-decoration-none text-success">Voltar ao Login</a>
+            </p>
+        <?php endif; ?>
     </div>
 </div>
-
-
 
 </body>
 </html>

@@ -8,7 +8,7 @@ class UsuarioModel extends Model
 {
     protected $table = 'users';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id','nome', 'cpf', 'email', 'senha','senha_smtp', 'tipo', 'estado','unidade','ativo'];
+    protected $allowedFields = ['id','nome', 'cpf', 'email', 'senha','senha_smtp', 'tipo', 'estado','unidade','ativo','precisa_alterar_senha'];
 
     protected $useTimestamps = true;
 
@@ -29,5 +29,12 @@ class UsuarioModel extends Model
         // Somente para teste porque esta query pode variar conforme o banco de dados que for usado como postgres etc 
         return $this->where("REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), ' ', '')", $cpfLimpo)->first();
     }
+    public function marcarSenhaAlterada($idUsuario)
+    {
+        return $this->update($idUsuario, [
+            'precisa_alterar_senha' => 0
+        ]);
+    }
+
 
 }

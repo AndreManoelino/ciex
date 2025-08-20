@@ -18,11 +18,9 @@ class Autenticacao extends Controller
     public function login()
     {
         if ($this->request->getMethod() === 'POST') {
-            // Normaliza o CPF vindo do formulário (remove pontos, traços, espaços)
             $cpf = preg_replace('/[^0-9]/', '', $this->request->getPost('cpf'));
             $senha = $this->request->getPost('senha');
 
-            // Busca usuário no banco usando método que normaliza CPF (removendo formatação do banco)
             $user = $this->usuarioModel->findByCpfNormalized($cpf);
 
             if ($user) {
@@ -31,9 +29,21 @@ class Autenticacao extends Controller
                 }
 
                 if ($user['senha'] === $senha) {
+                    // RECARREGA OS DADOS DO BANCO PARA GARANTIR O ESTADO ATUAL
+                    $user = $this->usuarioModel->find($user['id']);
+
+                    // SE A SENHA AINDA PRECISA SER ALTERADA → REDIRECIONA
+                    if ((int) $user['precisa_alterar_senha'] === 1) {
+                        session()->setFlashdata('cpf', $cpf);
+                        return redirect()->to('/recuperar-senha');
+                    }
+
+                    // Normaliza tipo de usuário
                     if (strtolower($user['tipo']) === 'administrador') {
                         $user['tipo'] = 'admin';
                     }
+
+                    // Prepara sessão normal
                     $sessionData = [
                         'user_id'    => $user['id'],
                         'nome'       => $user['nome'],
@@ -44,6 +54,7 @@ class Autenticacao extends Controller
                         'senha_smtp' => $user['senha_smtp'],
                         'logged_in'  => true
                     ];
+
                     session()->set($sessionData);
                     return redirect()->to('/inicio');
                 }
@@ -54,6 +65,41 @@ class Autenticacao extends Controller
 
         return view('autenticador/login');
     }
+    public function alterarSenha()
+    {
+        $usuarioModel = new \App\Models\UsuarioModel();
+
+        if ($this->request->getMethod() === 'post') {
+            $idUsuario = session()->get('user_id'); // Corrigi para pegar o ID da sessão correta
+            $novaSenha = $this->request->getPost('senha');
+            $confirmarSenha = $this->request->getPost('confirmar_senha');
+
+            // Validação: As senhas devem ser iguais
+            if ($novaSenha !== $confirmarSenha) {
+                return redirect()->back()->with('error', 'As senhas não coincidem. Tente novamente.');
+            }
+
+            // Validação extra: tamanho mínimo da senha
+            if (strlen($novaSenha) < 6) {
+                return redirect()->back()->with('error', 'A senha deve ter pelo menos 6 caracteres.');
+            }
+
+            // Atualiza a senha com hash e remove o flag de alteração
+            $usuarioModel->update($idUsuario, [
+                'senha' => password_hash($novaSenha, PASSWORD_DEFAULT),
+                'precisa_alterar_senha' => 0
+            ]);
+
+            session()->setFlashdata('success', 'Senha alterada com sucesso! Faça login novamente.');
+
+            // Redireciona para a página inicial do sistema
+            return redirect()->to(base_url('login'));
+        }
+
+        return view('auth/alterar_senha');
+    }
+
+
 
 
     public function registrar()
@@ -108,6 +154,7 @@ class Autenticacao extends Controller
                 'senha_smtp' => $this->request->getPost('senha_smtp'),
                 'tipo'       => $tipo,
                 'ativo'      => 1,
+                'precisa_alterar_senha' => 1
             ];
 
             if ($tipo === 'supervisor') {
@@ -156,21 +203,28 @@ class Autenticacao extends Controller
     public function recuperarSenha()
     {
         if ($this->request->getMethod() === 'POST') {
-            // Normaliza o CPF para garantir consistência
             $cpf = preg_replace('/[^0-9]/', '', $this->request->getPost('cpf'));
             $senhaNova = $this->request->getPost('senha');
 
             $user = $this->usuarioModel->findByCpfNormalized($cpf);
 
-
             if ($user) {
                 if ($user['ativo'] == 0) {
                     return view('autenticador/recuperar_senha', ['errors' => 'Usuário inativo. Recuperação de senha não permitida.']);
                 }
-                
-                // Atualiza a senha normalmente
-                $this->usuarioModel->update($user['id'], ['senha' => $senhaNova]);
-                return redirect()->to('/login')->with('msg', 'Senha alterada com sucesso');
+
+                // Atualiza senha e define que não precisa mais alterar
+                $this->usuarioModel->update($user['id'], [
+                    'senha' => $senhaNova,
+                    'precisa_alterar_senha' => 0
+                ]);
+
+                // Força recarregar os dados atualizados do usuário
+                $user = $this->usuarioModel->find($user['id']);
+
+                // Mensagem amigável e redirecionamento para login
+                session()->setFlashdata('msg', 'Senha alterada com sucesso! Faça login com a nova senha.');
+                return redirect()->to('/login');
             } else {
                 return view('autenticador/recuperar_senha', ['errors' => 'CPF não encontrado']);
             }
@@ -178,6 +232,8 @@ class Autenticacao extends Controller
 
         return view('autenticador/recuperar_senha');
     }
+
+
 
     // Função atribuindo os estados para autenticação 
     private function getEstados()
